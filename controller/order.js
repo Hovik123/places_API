@@ -30,8 +30,8 @@ function getOrder(req, res) {
                             lat: lat,
                             long: lng
                         },
-                        duration: item.duration,
-                        destination: item.durationValue
+                        duration: (item.durationValue / 60).toFixed(2),
+                        destination: item.distanceValue
                     }
                 };
                 res.send(order);
