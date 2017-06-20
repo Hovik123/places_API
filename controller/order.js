@@ -24,13 +24,13 @@ function getOrder(req, res) {
             }).then(item => {
                 const order = {
                     order: {
-                        orderId: getRandomNumber(10000),
+                        id: getRandomNumber(10000),
                         location: {
                             address: place.vicinity,
                             lat: lat,
                             long: lng
                         },
-                        duration: item.distanceValue,
+                        duration: item.duration,
                         destination: item.durationValue
                     }
                 };
