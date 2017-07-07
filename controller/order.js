@@ -81,7 +81,7 @@ function getOrderViaDestination(req, res) {
                 })
         })
         .catch((err) => res.send(err));
-}~
+}
 
 function getRandomNumber(range) {
     return Math.floor((Math.random() * range) + 1);
