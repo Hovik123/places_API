@@ -45,8 +45,8 @@ function getOrderViaDestination(req, res) {
                 params = {
                     location: `${lat},${lng}`,
                     radius: 5000
-                }
-            let isOdd = isOdd();
+                },
+                IsOdd = isOdd();
             getPlacesByParams(params)
                 .then(result => {
                     let destinationItem = result.item,
@@ -70,11 +70,11 @@ function getOrderViaDestination(req, res) {
                             destination: item.distanceValue
                         }
                     };
-                    if (isOdd()) {
+                    if (IsOdd) {
                         order.order.duration = (destination.duration / 60).toFixed(2),
                         order.order.destination = (destination.distance)
                     };
-                    if (isOdd()) {
+                    if (IsOdd) {
                         order.order.destinationAddress = {
                             address: destinationItem.destination,
                             lat: destination.lat,
