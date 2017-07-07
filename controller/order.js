@@ -73,7 +73,12 @@ function getOrderViaDestination(req, res) {
                     if (IsOdd) {
                         order.order.duration = (destination.duration / 60).toFixed(2),
                         order.order.destination = (destination.distance)
-                    };
+                    }else{
+
+                        order.order.duration: (item.durationValue / 60).toFixed(2),
+                        order.order.destination: item.distanceValue
+
+                    }
                     if (IsOdd) {
                         order.order.destinationAddress = {
                             address: destinationItem.destination,
