@@ -4,7 +4,7 @@ const order  = require('./order');
 const router = express.Router();
 
 
-// mount order routes at /order
-router.use('/order', order);
+// mount order routes at /
+router.use('/', order);
 
 module.exports = router;
