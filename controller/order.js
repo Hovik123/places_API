@@ -46,7 +46,7 @@ function getOrderViaDestination(req, res) {
                     location: `${lat},${lng}`,
                     radius: 5000
                 },
-                IsOdd = isOdd();
+               isOddNumber = isOdd();
             getPlacesByParams(params)
                 .then(result => {
                     let destinationItem = result.item,
@@ -66,20 +66,11 @@ function getOrderViaDestination(req, res) {
                                 lat: lat,
                                 lng: lng
                             },
-                            duration: (item.durationValue / 60).toFixed(2),
-                            destination: item.distanceValue
+                            duration: isOddNumber ? destination.duration : item.durationValue,
+                            destination: isOddNumber ? destination.distance : item.distanceValue
                         }
                     };
-                    if (IsOdd) {
-                        order.order.duration = (destination.duration / 60).toFixed(2),
-                        order.order.destination = (destination.distance)
-                    }else{
-
-                        order.order.duration: (item.durationValue / 60).toFixed(2),
-                        order.order.destination: item.distanceValue
-
-                    }
-                    if (IsOdd) {
+                    if (isOddNumber) {
                         order.order.destinationAddress = {
                             address: destinationItem.destination,
                             lat: destination.lat,
@@ -90,7 +81,7 @@ function getOrderViaDestination(req, res) {
                 })
         })
         .catch((err) => res.send(err));
-}
+}~
 
 function getRandomNumber(range) {
     return Math.floor((Math.random() * range) + 1);
