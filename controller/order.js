@@ -13,23 +13,23 @@ function getOrder(req, res) {
         location: `${req.param('lat')},${req.param('long')}`,
         radius: 5000
     };
-getPlacesByParams(params)
+    getPlacesByParams(params)
         .then(data => {
-            let { item, place } = data,
-                { lat, lng } = place.geometry.location
-                const order = {
-                    order: {
-                        id: getRandomNumber(10000),
-                        location: {
-                            address: place.vicinity,
-                            lat: lat,
-                            long: lng
-                        },
-                        duration: (item.durationValue / 60).toFixed(2),
-                        destination: item.distanceValue
-                    }
-                };
-                res.send(order);            
+            let {item, place} = data,
+                {lat, lng} = place.geometry.location;
+            const order = {
+                order: {
+                    id: getRandomNumber(10000),
+                    location: {
+                        address: place.vicinity,
+                        lat: lat,
+                        long: lng
+                    },
+                    duration: (item.durationValue / 60).toFixed(2),
+                    destination: item.distanceValue
+                }
+            };
+            res.send(order);
         }).catch((err) => res.send(err));
 }
 
@@ -40,13 +40,13 @@ function getOrderViaDestination(req, res) {
     };
     getPlacesByParams(params)
         .then(data => {
-            let { item, place } = data,
-                { lat, lng } = place.geometry.location,
+            let {item, place} = data,
+                {lat, lng} = place.geometry.location,
                 params = {
                     location: `${lat},${lng}`,
                     radius: 5000
                 },
-               isOddNumber = isOdd();
+                isOddNumber = isOdd();
             getPlacesByParams(params)
                 .then(result => {
                     let destinationItem = result.item,
@@ -56,7 +56,7 @@ function getOrderViaDestination(req, res) {
                             lng: destinationPlace.geometry.location.lng,
                             duration: destinationItem.durationValue,
                             distance: destinationItem.distanceValue
-                        }
+                        };
                     const order = {
                         order: {
                             id: getRandomNumber(1000),
@@ -102,20 +102,21 @@ function getPlacesByParams(params = {}) {
             .then(data => {
                 const places = JSON.parse(data.text).results,
                     place = places[getRandomNumber(places.length - 1)];
-                let { lat, lng } = place.geometry.location;
+                let {lat, lng} = place.geometry.location;
                 return getDistance({
                     origin: params.location,
                     destination: `${lat},${lng}`,
                 })
                     .then((item) => {
-                        resolve({ item, place });
+                        resolve({item, place});
                     });
             })
             .catch(err => reject(err));
     });
-};
-function isOdd(){
-    return getRandomNumber(4) % 2 !== 0; 
+}
+
+function isOdd() {
+    return getRandomNumber(4) % 2 !== 0;
 }
 
 module.exports = {
