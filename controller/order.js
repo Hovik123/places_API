@@ -66,7 +66,7 @@ function getOrderViaDestination(req, res) {
                                 lat: lat,
                                 lng: lng
                             },
-                            duration: isOddNumber ? destination.duration : item.durationValue,
+                            duration: isOddNumber ? (destination.duration / 60).toFixed(2) : (item.durationValue / 60).toFixed(2),
                             destination: isOddNumber ? destination.distance : item.distanceValue
                         }
                     };
