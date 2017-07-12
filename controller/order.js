@@ -10,7 +10,7 @@ distanceAPI.apiKey = API_KEY;
  */
 function getOrder(req, res) {
     const params = {
-        location: `${req.param('lat')},${req.param('lng')}`,
+        location: `${req.param('lat')},${req.param('long')}`,
         radius: 5000
     };
     getPlacesByParams(params)
