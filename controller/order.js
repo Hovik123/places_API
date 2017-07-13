@@ -10,7 +10,7 @@ distanceAPI.apiKey = API_KEY;
  */
 function getOrder(req, res) {
     const params = {
-        location: `${req.param('lat')},${req.param('long')}`,
+        location: `${req.param('lat')},${req.param('lng')}`,
         radius: 5000
     };
     getPlacesByParams(params)
@@ -82,8 +82,7 @@ function getOrderViaDestination(req, res) {
                     }
                     res.send(order);
                 })
-        })
-        .catch((err) => res.send(err));
+        }).catch((err) => res.send(err));
 }
 
 function getRandomNumber(range) {
