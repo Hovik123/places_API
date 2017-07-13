@@ -45,8 +45,7 @@ function getOrderViaDestination(req, res) {
                 params = {
                     location: `${lat},${lng}`,
                     radius: 5000
-                },
-                isOddNumber = isOdd();
+                };
             getPlacesByParams(params)
                 .then(result => {
                     let destinationItem = result.item,
@@ -61,20 +60,22 @@ function getOrderViaDestination(req, res) {
                         order: {
                             id: getRandomNumber(1000),
                             taxiType: `${getRandomNumber(4)}`,
-                            pickUpAddress: {
+                            pickup: {
                                 address: place.vicinity,
                                 lat: lat,
-                                lng: lng
-                            },
-                            duration: isOddNumber ? (destination.duration / 60).toFixed(2) : (item.durationValue / 60).toFixed(2),
-                            destination: isOddNumber ? destination.distance : item.distanceValue
+                                lng: lng,
+                                duration: (item.durationValue / 60).toFixed(2),
+                                distance: item.distanceValue
+                            }
                         }
                     };
-                    if (isOddNumber) {
-                        order.order.destinationAddress = {
+                    if (isOdd()) {
+                        order.order.destination = {
                             address: destinationItem.destination,
                             lat: destination.lat,
-                            lng: destination.lng
+                            lng: destination.lng,
+                            duration: (destination.duration / 60).toFixed(2),
+                            distance: destination.distance
                         }
                     }
                     res.send(order);
@@ -114,7 +115,6 @@ function getPlacesByParams(params = {}) {
             .catch(err => reject(err));
     });
 }
-
 function isOdd() {
     return getRandomNumber(4) % 2 !== 0;
 }
