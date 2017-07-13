@@ -10,28 +10,30 @@ distanceAPI.apiKey = API_KEY;
  */
 function getOrder(req, res) {
     const params = {
-        location: `${req.param('lat')},${req.param('long')}`,
+        location: `${req.param('lat')},${req.param('lng')}`,
         radius: 5000
     };
-getPlacesByParams(params)
+    getPlacesByParams(params)
         .then(data => {
             let { item, place } = data,
                 { lat, lng } = place.geometry.location
-                const order = {
-                    order: {
-                        id: getRandomNumber(10000),
-                        location: {
-                            address: place.vicinity,
-                            lat: lat,
-                            long: lng
-                        },
-                        duration: (item.durationValue / 60).toFixed(2),
-                        destination: item.distanceValue
-                    }
-                };
-                res.send(order);            
-        }).catch((err) => res.send(err));
-}
+                    const order = {
+                        order: {
+                            id: getRandomNumber(1000),
+                            taxiType: `${getRandomNumber(4)}`,
+                            pickup: {
+                                address: place.vicinity,
+                                lat: lat,
+                                lng: lng,
+                                duration: (item.durationValue / 60).toFixed(2),
+                                distance: item.distanceValue
+                            }
+                        }
+                    };
+            res.send(order);
+        })
+        .catch((err) => res.send(err));
+};
 
 function getOrderViaDestination(req, res) {
     const params = {
@@ -45,8 +47,7 @@ function getOrderViaDestination(req, res) {
                 params = {
                     location: `${lat},${lng}`,
                     radius: 5000
-                },
-               isOddNumber = isOdd();
+                }
             getPlacesByParams(params)
                 .then(result => {
                     let destinationItem = result.item,
@@ -61,26 +62,27 @@ function getOrderViaDestination(req, res) {
                         order: {
                             id: getRandomNumber(1000),
                             taxiType: `${getRandomNumber(4)}`,
-                            pickUpAddress: {
+                            pickup: {
                                 address: place.vicinity,
                                 lat: lat,
-                                lng: lng
-                            },
-                            duration: isOddNumber ? (destination.duration / 60).toFixed(2) : (item.durationValue / 60).toFixed(2),
-                            destination: isOddNumber ? destination.distance : item.distanceValue
+                                lng: lng,
+                                duration: (item.durationValue / 60).toFixed(2),
+                                distance: item.distanceValue
+                            }
                         }
                     };
-                    if (isOddNumber) {
-                        order.order.destinationAddress = {
+                    if (isOdd()) {
+                        order.order.destination = {
                             address: destinationItem.destination,
                             lat: destination.lat,
-                            lng: destination.lng
+                            lng: destination.lng,
+                            duration: (destination.duration / 60).toFixed(2),
+                            distance: destination.distance
                         }
                     }
                     res.send(order);
                 })
-        })
-        .catch((err) => res.send(err));
+        }).catch((err) => res.send(err));
 }
 
 function getRandomNumber(range) {
