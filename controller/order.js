@@ -1,4 +1,4 @@
-const API_KEY = 'AIzaSyCezVZ_cJO0huqcwqjj-LqKqCAyTjKxs10';
+const API_KEY = 'AIzaSyDTjbnjW1OQDQudj8y_Zqe6Pd4ztw-5gdg';
 const GooglePlaces = require('node-googleplaces');
 const distanceAPI = require('google-distance');
 const places = new GooglePlaces(API_KEY);
@@ -10,7 +10,7 @@ distanceAPI.apiKey = API_KEY;
  */
 function getOrder(req, res) {
     const params = {
-        location: `${req.param('lat')},${req.param('long')}`,
+        location: `${req.query.lat},${req.query.long}`,
         radius: 5000
     };
     getPlacesByParams(params)
@@ -35,7 +35,7 @@ function getOrder(req, res) {
 
 function getOrderViaDestination(req, res) {
     const params = {
-        location: `${req.param('lat')},${req.param('lng')}`,
+        location: `${req.query.lat},${req.query.lng}`,
         radius: 5000
     };
     getPlacesByParams(params)
