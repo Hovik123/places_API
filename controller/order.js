@@ -84,6 +84,34 @@ function getOrderViaDestination(req, res) {
         .catch((err) => res.send(err));
 }
 
+function getPlaces(req, res) {
+    const params = {
+        location: `${req.param('lat')},${req.param('lng')}`,
+        radius: 3000
+    };
+    getPlacesNearby(params)
+        .then(data => {
+            let {items, places} = data;
+            let responseData = [];
+            places.forEach((place, index) => {
+                let item = items[index];
+                responseData.push({
+                    location: {
+                        address: place.vicinity,
+                        lat: place.geometry.location.lat,
+                        long: place.geometry.location.lng
+                    },
+                    duration: (item.durationValue / 60).toFixed(2),
+                    destination: item.distanceValue
+                })
+            });
+            res.send({places: responseData});
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}
+
 function getRandomNumber(range) {
     return Math.floor((Math.random() * range) + 1);
 }
@@ -115,11 +143,34 @@ function getPlacesByParams(params = {}) {
             .catch(err => reject(err));
     });
 }
+
+function getPlacesNearby(params = {}) {
+    return places.nearbySearch(params)
+        .then(data => {
+            const places = data.body.results;
+            const selectedPlaces = [];
+            const D = [];
+            for (let i = 0; i < 10; i++) {
+                let {lat, lng} = places[i].geometry.location;
+                D.push(getDistance({
+                    origin: params.location,
+                    destination: `${lat},${lng}`,
+                }));
+                selectedPlaces.push(places[i]);
+            }
+            return Promise.all(D)
+                .then((items) => {
+                    return Promise.resolve({items, places: selectedPlaces});
+                });
+        });
+}
+
 function isOdd() {
     return getRandomNumber(4) % 2 !== 0;
 }
 
 module.exports = {
     order: getOrder,
-    getOrderViaDestination
+    getOrderViaDestination,
+    getPlaces
 };
