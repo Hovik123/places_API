@@ -150,7 +150,7 @@ function getPlacesNearby(params = {}) {
             const places = data.body.results;
             const selectedPlaces = [];
             const D = [];
-            for (let i = 0; i < 10; i++) {
+            for (let i = 1; i < 11; i++) {
                 let {lat, lng} = places[i].geometry.location;
                 D.push(getDistance({
                     origin: params.location,
